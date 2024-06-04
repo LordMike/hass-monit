@@ -18,16 +18,16 @@ This custom component allows Home Assistant to integrate with the Monit monitori
 ## Installation
 
 1. **Using HACS (Home Assistant Community Store)**
-- Go to HACS in Home Assistant.
-- Click on "Integrations".
-- Click on the "+" button.
-- Search for "Monit".
-- Click "Install".
+    - Go to HACS in Home Assistant.
+    - Click on "Integrations".
+    - Click on the "+" button.
+    - Search for "Monit".
+    - Click "Install".
 
 2. **Manual Installation**
-- Download the `monit` directory from the latest release.
-- Copy the `monit` directory to your `custom_components` directory in Home Assistant.
-- Restart Home Assistant.
+    - Download the `monit` directory from the latest release.
+    - Copy the `monit` directory to your `custom_components` directory in Home Assistant.
+    - Restart Home Assistant.
 
 ## Usage
 
