@@ -1,47 +1,59 @@
-# Notice
+# Home Assistant Monit Integration
 
-The component and platforms in this repository are not meant to be used by a
-user, but as a "blueprint" that custom component developers can build
-upon, to make more awesome stuff.
+This custom component allows Home Assistant to integrate with the Monit monitoring system. It periodically downloads an XML file from Monit and creates binary sensor entities for each check Monit has. Entities are created dynamically as they are added to Monit and removed when they are no longer present.
 
-HAVE FUN! 😎
+## Features
 
-## Why?
+- Periodically poll Monit for status updates, times checks to match when Monit would poll
+- Create binary sensor entities for each Monit check.
+- Support for multiple Monit servers.
 
-This is simple, by having custom_components look (README + structure) the same
-it is easier for developers to help each other and for users to start using them.
+## Configuration
 
-If you are a developer and you want to add things to this "blueprint" that you think more
-developers will have use for, please open a PR to add it :)
+### Configuration Parameters
 
-## What?
+- **URL or hostname of the server** (required)
+- **Username & password** (optional)
 
-This repository contains multiple files, here is a overview:
+## Installation
 
-File | Purpose | Documentation
--- | -- | --
-`.devcontainer.json` | Used for development/testing with Visual Studio Code. | [Documentation](https://code.visualstudio.com/docs/remote/containers)
-`.github/ISSUE_TEMPLATE/*.yml` | Templates for the issue tracker | [Documentation](https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository)
-`.vscode/tasks.json` | Tasks for the devcontainer. | [Documentation](https://code.visualstudio.com/docs/editor/tasks)
-`custom_components/integration_blueprint/*` | Integration files, this is where everything happens. | [Documentation](https://developers.home-assistant.io/docs/creating_component_index)
-`CONTRIBUTING.md` | Guidelines on how to contribute. | [Documentation](https://help.github.com/en/github/building-a-strong-community/setting-guidelines-for-repository-contributors)
-`LICENSE` | The license file for the project. | [Documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)
-`README.md` | The file you are reading now, should contain info about the integration, installation and configuration instructions. | [Documentation](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
-`requirements.txt` | Python packages used for development/lint/testing this integration. | [Documentation](https://pip.pypa.io/en/stable/user_guide/#requirements-files)
+1. **Using HACS (Home Assistant Community Store)**
+- Go to HACS in Home Assistant.
+- Click on "Integrations".
+- Click on the "+" button.
+- Search for "Monit".
+- Click "Install".
 
-## How?
+2. **Manual Installation**
+- Download the `monit` directory from the latest release.
+- Copy the `monit` directory to your `custom_components` directory in Home Assistant.
+- Restart Home Assistant.
 
-1. Create a new repository in GitHub, using this repository as a template by clicking the "Use this template" button in the GitHub UI.
-1. Open your new repository in Visual Studio Code devcontainer (Preferably with the "`Dev Containers: Clone Repository in Named Container Volume...`" option).
-1. Rename all instances of the `integration_blueprint` to `custom_components/<your_integration_domain>` (e.g. `custom_components/awesome_integration`).
-1. Rename all instances of the `Integration Blueprint` to `<Your Integration Name>` (e.g. `Awesome Integration`).
-1. Run the `scripts/develop` to start HA and test out your new integration.
+## Usage
 
-## Next steps
+1. Go to Home Assistant and navigate to **Configuration** > **Devices & Services**.
+2. Click on **Add Integration**.
+3. Search for "Monit" and select it.
+4. Follow the prompts to set up the Monit integration.
 
-These are some next steps you may want to look into:
-- Add tests to your integration, [`pytest-homeassistant-custom-component`](https://github.com/MatthewFlamm/pytest-homeassistant-custom-component) can help you get started.
-- Add brand images (logo/icon) to https://github.com/home-assistant/brands.
-- Create your first release.
-- Share your integration on the [Home Assistant Forum](https://community.home-assistant.io/).
-- Submit your integration to the [HACS](https://hacs.xyz/docs/publish/start).
+## Development
+
+### Setup
+
+1. Clone this repository.
+2. Open the repository in Visual Studio Code.
+3. Use the provided `devcontainer.json` for a pre-configured development environment.
+
+### Commands
+
+- **Run Home Assistant**: `scripts/develop`
+- **Run Tests**: `pytest`
+
+### Contributing
+
+Contributions are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+
+## Acknowledgements
+
+- Most of the integration has been written by ChatGPT.
+- This integration is based on the Home Assistant integration blueprint.
