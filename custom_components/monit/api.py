@@ -24,22 +24,61 @@ class MonitApiClientAuthenticationError(MonitApiClientError):
     """Exception to indicate an authentication error."""
 
 
-class MonitApiStatus():
+class MonitApiStatus:
+    """
+    Represents the status retrieved from the Monit API.
+
+    Attributes:
+        server (MonitApiStatusServer): The server status information.
+        checks (dict[str, MonitApiStatusCheck]): A dictionary of checks, keyed by the check name.
+    """
+
     def __init__(self, server: MonitApiStatusServer, checks: dict[str, MonitApiStatusCheck]):
+        """
+        Initialize a MonitApiStatus instance.
+        """
         self.server = server
         self.checks = checks
 
 
-class MonitApiStatusCheck():
+class MonitApiStatusCheck:
+    """
+    Represents the status of a single Monit check.
+
+    Attributes:
+        id (str): The unique identifier of the check.
+        name (str): The name of the check.
+        status (str): The status of the check.
+        collected_time (float): The time the check data was collected, as a unix timestamp.
+    """
+
     def __init__(self, id: str, name: str, status: str, collected_time: float):
+        """
+        Initialize a MonitApiStatusCheck instance.
+        """
         self.id = id
         self.name = name
         self.status = status
         self.collected_time = collected_time
 
 
-class MonitApiStatusServer():
+class MonitApiStatusServer:
+    """
+    Represents the status of the Monit server.
+
+    Attributes:
+        id (str): The unique identifier of the server.
+        incarnation (int): The incarnation time of the server, a unix timestamp.
+        version (str): The version of the Monit server.
+        uptime (int): The uptime of the server in seconds.
+        poll (int): The polling interval of the server in seconds.
+        localhostname (str): The local hostname of the server.
+    """
+
     def __init__(self, id: str, incarnation: int, version: str, uptime: int, poll: int, localhostname: str):
+        """
+        Initialize a MonitApiStatusServer instance.
+        """
         self.id = id
         self.incarnation = incarnation
         self.version = version

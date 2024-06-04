@@ -1,7 +1,6 @@
 """Binary sensor platform for monit."""
 from __future__ import annotations
 
-from urllib.parse import urlparse
 from datetime import datetime
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
@@ -22,7 +21,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     coordinator: MonitDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
         MonitBinarySensor(coordinator, check_name)
-        for check_name in coordinator.data.checks.keys()
+        for check_name in coordinator.data.checks
     )
 
 
