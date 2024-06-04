@@ -1,35 +1,51 @@
 name: "Release"
 
 on:
-  release:
-    types:
-      - "published"
+  push:
+    tags:
+      - 'v*.*.*'
 
-permissions: {}
+permissions:
+  contents: write
 
 jobs:
   release:
     name: "Release"
     runs-on: "ubuntu-latest"
-    permissions:
-      contents: write
     steps:
       - name: "Checkout the repository"
         uses: "actions/checkout@v4.1.6"
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: "Set up jq"
+        run: "sudo apt-get install -y jq"
 
       - name: "Adjust version number"
         shell: "bash"
         run: |
-          yq -i -o json '.version="${{ github.event.release.tag_name }}"' \
-            "${{ github.workspace }}/custom_components/integration_blueprint/manifest.json"
+          VERSION=${GITHUB_REF/refs\/tags\/v/}
+          jq --arg version "$VERSION" '.version = $version' "${{ github.workspace }}/custom_components/monit/manifest.json" > "${{ github.workspace }}/custom_components/monit/manifest.json.tmp"
+          mv "${{ github.workspace }}/custom_components/monit/manifest.json.tmp" "${{ github.workspace }}/custom_components/monit/manifest.json"
+
+      - name: "Create a diff with the previous tag"
+        id: diff
+        shell: "bash"
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^)
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_ENV
+          git log --pretty=format:'%h - %s (%an, %ad)' "$PREVIOUS_TAG..HEAD" > release_notes.txt
 
       - name: "ZIP the integration directory"
         shell: "bash"
         run: |
-          cd "${{ github.workspace }}/custom_components/integration_blueprint"
-          zip integration_blueprint.zip -r ./
+          cd "${{ github.workspace }}/custom_components/monit"
+          zip -r monit.zip ./
 
-      - name: "Upload the ZIP file to the release"
-        uses: softprops/action-gh-release@v2.0.5
+      - name: "Create GitHub Release"
+        uses: softprops/action-gh-release@v2
         with:
-          files: ${{ github.workspace }}/custom_components/integration_blueprint/integration_blueprint.zip
+          files: ${{ github.workspace }}/custom_components/monit/monit.zip
+          body_path: release_notes.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
