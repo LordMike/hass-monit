@@ -3,13 +3,11 @@
         "step": {
             "user": {
                 "title": "Configure Monit Integration",
-                "description": "If you need help with the configuration have a look here: https://github.com/lordmike/ha-monit. Fill out the url of your monit server, such as \"http://192.168.1.10:2812/\". The integration will periodically fetch the \"/_status?format=xml\" endpoint. If authentication has been configured, fill out the username/password for it, else leave them blank.",
+                "description": "If you need help with the configuration have a look here: https://github.com/lordmike/hass-monit. Fill out the url of your monit server, such as \"http://192.168.1.2:2812/\". The integration will periodically fetch the \"/_status?format=xml\" endpoint. If authentication has been configured, fill out the username/password for it, else leave them blank.",
                 "data": {
                     "url": "Server URL",
                     "username": "Username (optional)",
-                    "password": "Password (optional)",
-                    "remove_entities": "Automatically remove entities for removed checks",
-                    "polling_interval": "Polling interval (seconds)"
+                    "password": "Password (optional)"
                 }
             }
         },
