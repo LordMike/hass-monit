@@ -1,6 +1,6 @@
 # Home Assistant Monit Integration
 
-This custom component allows Home Assistant to integrate with the Monit monitoring system. It periodically downloads an XML file from Monit and creates binary sensor entities for each check Monit has. Entities are created dynamically as they are added to Monit and removed when they are no longer present.
+This custom component allows Home Assistant to integrate with the Monit monitoring system. It periodically downloads an XML file from Monit and creates binary sensor entities for each check Monit has.
 
 ## Features
 
