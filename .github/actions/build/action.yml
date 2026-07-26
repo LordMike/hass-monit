@@ -1,0 +1,55 @@
+name: Validate and package Monit
+description: Run integration validation and prepare the HACS release artifact
+
+# Contract:
+# - Managed CI and scheduled validation both call this repository-owned action.
+# - Ruff, Hassfest, and HACS validation run for every invocation.
+# - SemVer tags additionally produce the fixed HACS attachment consumed by CI.
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      with:
+        python-version: '3.11'
+        cache: pip
+        cache-dependency-path: requirements.txt
+
+    - name: Install requirements
+      shell: bash
+      run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+    - name: Run Ruff
+      shell: bash
+      run: python -m ruff check .
+
+    - name: Run Hassfest validation
+      uses: home-assistant/actions/hassfest@e3fb68ebda13d88a0d695082f471ba2c83d025fb # master
+
+    - name: Run HACS validation
+      uses: hacs/action@1ebf01c408f29afcb6406bd431bc98fd8cbb15aa # main
+      with:
+        category: integration
+
+    - name: Set release version
+      if: env.CI_PUBLISH_TARGET == 'release'
+      shell: bash
+      env:
+        VERSION: ${{ env.CI_VERSION }}
+      run: |
+        set -euo pipefail
+        manifest=custom_components/monit/manifest.json
+        jq --arg version "$VERSION" '.version = $version' "$manifest" > "$manifest.tmp"
+        mv "$manifest.tmp" "$manifest"
+
+    - name: Build HACS release artifact
+      if: env.CI_PUBLISH_TARGET == 'release'
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p .artifacts/release
+        (
+          cd custom_components/monit
+          zip -r ../../.artifacts/release/monit.zip .
+        )
