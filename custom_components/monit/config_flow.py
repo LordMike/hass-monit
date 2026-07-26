@@ -46,6 +46,10 @@ class MonitFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="user",
+            description_placeholders={
+                "documentation_url": "https://github.com/lordmike/hass-monit",
+                "example_url": "http://192.168.1.2:2812/",
+            },
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_URL): selector.TextSelector(
